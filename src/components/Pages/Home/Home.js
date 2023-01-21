@@ -8,13 +8,14 @@ const Home = () => {
 
 
     const [listData, setListData] = useState([]);
+    const [refreshKey, setRefreshKey] = useState(0);
 
     useEffect(()=> {
 
        const parsedData = getLocal();
        setListData(parsedData)
 
-    },[])
+    },[refreshKey])
 
 
     // set data to local storage
@@ -68,6 +69,8 @@ const Home = () => {
         
 
         form.reset();
+
+        setRefreshKey(oldKey => oldKey +1) 
 
     }
     return (

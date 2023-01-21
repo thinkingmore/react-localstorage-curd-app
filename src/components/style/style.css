@@ -88,6 +88,11 @@ table {
     background-color: black;
 }
 
+.delete-button {
+
+    background-color: red;
+}
+
 .d-none {
 
     display: none;

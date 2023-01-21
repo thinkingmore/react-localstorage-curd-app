@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../../style/style.css';
 
 const Contact = () => {
@@ -10,6 +10,8 @@ const Contact = () => {
     const [refreshKey, setRefreshKey] = useState(0);
     
     const { id } = useParams();
+
+    const navigate = useNavigate()
 
     useEffect(()=>{
         const parsedData = JSON.parse(localStorage.getItem("records"));
@@ -87,6 +89,20 @@ const Contact = () => {
         setRefreshKey(oldKey => oldKey +1)
 
     }
+
+    // delete record from local storage
+
+    const handleDelete = () => {
+        const parsedData = JSON.parse(localStorage.getItem("records"));
+        const filteredData = parsedData.filter(ld=> ld.id !== id );
+        localStorage.setItem("records",JSON.stringify(filteredData));
+
+        // refresh page after delete
+        setRefreshKey(oldKey => oldKey +1);
+
+        // navigate to homepage after deleting entry
+        navigate("/");
+    }
     return (
         <div className='container'>
            <div className="table-container">
@@ -97,7 +113,8 @@ const Contact = () => {
                         <th>#ID</th>
                         <th>Name</th>
                         <th>Contact</th>                
-                        <th>Details</th>                
+                        <th>Edit</th>                
+                        <th>Delete</th>                
                     </tr>
                     {
                         listData.map( ld=>
@@ -108,6 +125,9 @@ const Contact = () => {
                                 <td>
                                     <button id="editBtn" onClick={toggleEdit} className='td-button edit-button'>Edit</button>
                                     <button id="submitBtn" onClick={handleEdit} className='td-button submit-button d-none'>Submit</button>
+                                </td>
+                                <td>
+                                    <button id="deleteBtn" onClick={handleDelete} className='td-button delete-button'>Delete</button>
                                 </td>
                             </tr>
                         )
